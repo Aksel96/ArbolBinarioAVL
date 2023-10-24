@@ -95,26 +95,7 @@ public class ArbolBinarioAVL {
     public void inorden(){
         this.inorden(this.root);
     }
-    private void preorden(Nodo nodo){
-        if (nodo != null){
-            nodo.printValue();
-            preorden(nodo.getLinkLeft());
-            preorden(nodo.getLinkRight());
-        }
-    }
-    public void preorden(){
-        this.preorden(this.root);
-    }
-    private void postorden(Nodo nodo){
-        if (nodo != null){
-            postorden(nodo.getLinkLeft());
-            postorden(nodo.getLinkRight());
-            nodo.printValue();
-        }
-    }
-    public void postorden(){
-        this.postorden(this.root);
-    }
+
     public void imprimirPorNiveles() {
         if (root == null) {
             return;
@@ -135,6 +116,68 @@ public class ArbolBinarioAVL {
                 queue.add(nodo.getLinkRight());
             }
         }
+    }
+
+    public void eliminar(int value) {
+        root = eliminar(root, value);
+    }
+
+    private Nodo eliminar(Nodo node, int value) {
+        if (node == null) {
+            return null;
+        }
+        if (value < node.getValue()) {
+            node.setLinkLeft(eliminar(node.getLinkLeft(), value));
+        } else if (value > node.getValue()) {
+            node.setLinkRight(eliminar(node.getLinkRight(), value));
+        } else {
+            if (node.getLinkLeft() == null || node.getLinkRight() == null) {
+                Nodo temp = (node.getLinkLeft() != null) ? node.getLinkLeft() : node.getLinkRight();
+
+                if (temp == null) {
+                    temp = node;
+                    node = null;
+                } else {
+                    node = temp;
+                }
+            } else {
+                Nodo temp = encontrarMinimo(node.getLinkRight());
+                node.setValue(temp.getValue());
+                node.setLinkRight(eliminar(node.getLinkRight(), temp.getValue()));
+            }
+        }
+        if (node == null) {
+            return node;
+        }
+        node.updateHeight();
+
+        int balance = node.getBalance();
+
+        if (balance > 1) {
+            if (node.getLinkLeft().getBalance() >= 0) {
+                return rotateRight(node);
+            } else {
+                node.setLinkLeft(rotateLeft(node.getLinkLeft()));
+                return rotateRight(node);
+            }
+        }
+
+        if (balance < -1) {
+            if (node.getLinkRight().getBalance() <= 0) {
+                return rotateLeft(node);
+            } else {
+                node.setLinkRight(rotateRight(node.getLinkRight()));
+                return rotateLeft(node);
+            }
+        }
+        return node;
+    }
+    private Nodo encontrarMinimo(Nodo node) {
+        Nodo current = node;
+        while (current.getLinkLeft() != null) {
+            current = current.getLinkLeft();
+        }
+        return current;
     }
 }
 
