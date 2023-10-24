@@ -1,14 +1,16 @@
 package org.example;
 
 public class Nodo {
-    Nodo linkRight; //Enlace al nodo hijo derecho
-    Nodo linkLeft; //Enlace al nodo hijo izquierdo
+    Nodo linkRight;
+    Nodo linkLeft;
     int value;
+    int height;
 
     public Nodo(int value) {
         this.linkLeft = null;
         this.linkRight = null;
         this.value = value;
+        this.height = 1;
     }
 
     public Nodo getLinkRight() {
@@ -37,4 +39,18 @@ public class Nodo {
     public void printValue(){
         System.out.println(this.getValue());
     }
+    public int getHeight(){
+        return height;
+    }
+    public void updateHeight(){
+        int leftHeight = (linkLeft != null) ? linkLeft.getHeight() : 0;
+        int rightHeight = (linkRight != null) ? linkRight.getHeight() : 0;
+        height = 1 + Math.max(leftHeight,rightHeight);
+    }
+    public int getBalance(){
+        int leftHeight = (linkLeft != null) ? linkLeft.getHeight() : 0;
+        int rightHeight = (linkRight != null) ? linkRight.getHeight() : 0;
+        return leftHeight - rightHeight;
+    }
+
 }

@@ -14,6 +14,10 @@ public class Main {
         arbolAVL.insert(71);
         arbolAVL.insert(73);
         arbolAVL.insert(74);
+        arbolAVL.insert(75);
+        arbolAVL.insert(76);
+        arbolAVL.insert(77);
+        arbolAVL.insert(44);
         System.out.println("Recorriendo inorden");
         arbolAVL.inorden();
         System.out.println("Recorriendo Post orden");
